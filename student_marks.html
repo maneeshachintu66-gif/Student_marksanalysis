@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Marks Analysis</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            margin: auto;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #2874a6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        h2 { color: #2874a6; }
+
+        #details, #result {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="container" id="login">
+    <h2>Student Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p id="error" style="color:red;"></p>
+</div>
+
+<!-- STUDENT DETAILS -->
+<div class="container" id="details">
+    <h2>Student Details</h2>
+    <input type="text" id="name" placeholder="Student Name">
+    <input type="text" id="roll" placeholder="Roll Number">
+    <input type="text" id="class" placeholder="Class">
+
+    <h2>Subject Marks</h2>
+    <input type="number" id="java" placeholder="Java Marks">
+    <input type="number" id="python" placeholder="Python Marks">
+    <input type="number" id="qc" placeholder="QC Marks">
+
+    <button onclick="analyze()">Analyze Marks</button>
+</div>
+
+<!-- RESULT PAGE -->
+<div class="container" id="result">
+    <h2>Marks Analysis</h2>
+    <p id="student"></p>
+    <p id="marks"></p>
+    <h3 id="total"></h3>
+    <h3 id="average"></h3>
+    <h3 id="grade"></h3>
+    <button onclick="location.reload()">Logout</button>
+</div>
+
+<script>
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "student" && pass === "1234") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("details").style.display = "block";
+    } else {
+        document.getElementById("error").innerHTML =
+            "Invalid Username or Password!";
+    }
+}
+
+function analyze() {
+    let name = document.getElementById("name").value;
+    let roll = document.getElementById("roll").value;
+    let cls = document.getElementById("class").value;
+
+    let java = Number(document.getElementById("java").value);
+    let python = Number(document.getElementById("python").value);
+    let qc = Number(document.getElementById("qc").value);
+
+    if(!name || !roll || !cls ||
+       document.getElementById("java").value === "" ||
+       document.getElementById("python").value === "" ||
+       document.getElementById("qc").value === "" ||
+       java < 0 || java > 100 ||
+       python < 0 || python > 100 ||
+       qc < 0 || qc > 100) {
+        alert("Please enter valid details and marks (0-100)");
+        return;
+    }
+
+    let total = java + python + qc;
+    let average = total / 3;
+    let percentage = (total / 300) * 100;
+
+    let grade = average >= 90 ? "A+" :
+                average >= 80 ? "A" :
+                average >= 70 ? "B" :
+                average >= 60 ? "C" :
+                average >= 50 ? "D" : "Fail";
+
+    document.getElementById("details").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("student").innerHTML =
+        "Name: " + name + "<br>Roll No: " + roll +
+        "<br>Class: " + cls;
+
+    document.getElementById("marks").innerHTML =
+        "Java: " + java +
+        "<br>Python: " + python +
+        "<br>QC: " + qc;
+
+    document.getElementById("total").innerHTML =
+        "Total Marks: " + total + " / 300";
+
+    document.getElementById("average").innerHTML =
+        "Average: " + average.toFixed(2) +
+        "<br>Percentage: " + percentage.toFixed(2) + "%";
+
+    document.getElementById("grade").innerHTML =
+        "Grade: " + grade;
+}
+</script>
+
+</body>
+</html>
